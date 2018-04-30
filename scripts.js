@@ -18,7 +18,7 @@ $(document).ready(function () {
     var geokey = "AIzaSyDY2_Bp1ICPX4-_HGHgokCAz67za-p6zG4";
     var geolockey = "AIzaSyD48iTPeJpCIyau5j6eRlXAHEYhrzNS1wY";
 
-
+//bug - tends to fail when traffic is slow
     if (navigator.geolocation.getCurrentPosition) {
         navigator.geolocation.getCurrentPosition(function(position) {
              lat = position.coords.latitude;
