@@ -1,0 +1,43 @@
+@import "templateProjectPageHeader";
+
+body {
+    background-color: $HEATWAVE;
+    font-family: $fontBody;
+}
+.icon {
+    color: $NIGHTFALL;
+    font-size: 8em;
+    margin-top:1vh;
+}
+.icon-pad{
+    padding: .3em.1em .1em .1em
+}
+img{
+    margin-top:1vh;
+}
+img#imgMap{
+    border: 3px solid $NIGHTFALL;
+    box-shadow: 10px 10px 5px 0px rgba(53,28,77,0.75);
+}
+.deg{
+    cursor: pointer;
+    color:$PARADISE;
+}
+.deg:hover{
+    color:$SUNSET;
+}
+.header {
+    text-align: center;
+}
+table{
+    width: 100%;
+}
+td.left{
+    width: 45%;
+}
+td.center{
+    width: 10%;
+}
+td.right{
+    width: 45%;
+}
