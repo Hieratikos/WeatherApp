@@ -300,7 +300,7 @@ template {
 
 @font-face {
   font-family: "Cuadradex";
-  src: url("fonts/Cuadradex.ttf"); }
+  src: url("../fonts/Cuadradex.ttf"); }
 #tempHeader {
   color: #351C4D;
   text-align: center;
