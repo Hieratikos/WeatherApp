@@ -1,0 +1,1 @@
+A Weather Report project as part of the projects for freeCodeCamp. The app makes calls to the Google geocode and staticmap API's. The location's longitude and latitude are then passed to the API at [darksky.net](https://darksky.net/) to get the weather report for that location. Basic jQuery and AJAX.

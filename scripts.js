@@ -1,16 +1,6 @@
 /**
  * Created by Admin on 4/30/2017.
  */
-// (function($) {
-//     $.fn.enableCors = function() {
-//         $.ajaxPrefilter(function(options) {
-//             if(options.crossDomain){
-//                 options.url = "http://cors.corsproxy.io/url=" + options.url;
-//             }
-//         });
-//         return this;
-//     };
-// }(jQuery));
 $(document).ready(function () {
     var lat = ""; var lon = ""; var country = ""; var city = ""; var state = ""; var temp = ""; var pic = "";
     var wkey = "134a2a3a1e2502e7415f6d6502a136ff/";
