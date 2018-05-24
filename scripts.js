@@ -2,11 +2,17 @@
  * Created by Admin on 4/30/2017.
  */
 $(document).ready(function () {
-    var lat = ""; var lon = ""; var country = ""; var city = ""; var state = ""; var temp = ""; var pic = "";
-    var wkey = "134a2a3a1e2502e7415f6d6502a136ff/";
-    var lockey = "AIzaSyBPfJzCZ-L3MGzaS3cLCqyV1wbS9pZ5T50";
-    var geokey = "AIzaSyDY2_Bp1ICPX4-_HGHgokCAz67za-p6zG4";
-    var geolockey = "AIzaSyD48iTPeJpCIyau5j6eRlXAHEYhrzNS1wY";
+    var lat = "",
+        lon = "",
+        country = "",
+        city = "",
+        state = "",
+        temp = "",
+        pic = "",
+        wkey = "134a2a3a1e2502e7415f6d6502a136ff/",
+        lockey = "AIzaSyBPfJzCZ-L3MGzaS3cLCqyV1wbS9pZ5T50",
+        geokey = "AIzaSyDY2_Bp1ICPX4-_HGHgokCAz67za-p6zG4",
+        geolockey = "AIzaSyD48iTPeJpCIyau5j6eRlXAHEYhrzNS1wY";
 
 //bug - tends to fail when traffic is slow
     if (navigator.geolocation.getCurrentPosition) {
