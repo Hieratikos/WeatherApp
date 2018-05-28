@@ -1,6 +1,4 @@
-/**
- * Created by Admin on 4/30/2017.
- */
+
 $(document).ready(function () {
     var lat = "",
         lon = "",
@@ -14,95 +12,103 @@ $(document).ready(function () {
         geokey = "AIzaSyDY2_Bp1ICPX4-_HGHgokCAz67za-p6zG4",
         geolockey = "AIzaSyD48iTPeJpCIyau5j6eRlXAHEYhrzNS1wY";
 
-//bug - tends to fail when traffic is slow
-    if (navigator.geolocation.getCurrentPosition) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-             lat = position.coords.latitude;
-             lon = position.coords.longitude;
-             //extra coords to play with:
-            //Bergen, Norway
-            // lat = 60.391920;
-            // lon = 5.322118;
-            //Lebanon, Missouri
-            //  lat = 37.670487;
-            //  lon = -92.752806;
-            //Badwater, California (Death Valley)
-            // lat = 36.22972;
-            // lon = -116.7682987;
-            //Santa Monica, California
-            // lat = 34.011776;
-            // lon = -118.494807;
-            //Seattle, Washington
-            // lat = 47.612329;
-            // lon = -122.338294;
-            //Rome, Italy
-            // lat = 41.905314;
-            // lon = 12.484865;
-            //Johannesburg, South Africa
-            // lat = -26.139839;
-            // lon = 27.993798;
-            //Pico Bolivar (summit), Merida, Venezuela
-            // lat = 8.5408552;
-            // lon = -71.0487095;
-            //hardcoded below for testing
-            // var map = "https://maps.googleapis.com/maps/api/staticmap?center=34.011776,-118.494807&zoom=13&size=500x500&markers=color:0xFF7E5F|34.011776,-118.494807&key=AIzaSyBPfJzCZ-L3MGzaS3cLCqyV1wbS9pZ5T50";
-            var map = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon +
-                "&zoom=13&size=500x500&markers=color:0xFF7E5F|" + lat + "," + lon + "&key=" + lockey;
-            $("#imgMap").attr("src", map);
-            $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon +
-                "&result_type=street_address&key=" + geokey, function (reply, status) {
-                var stuff = status;
-                if (reply.status === "ZERO_RESULTS"){
-                    $("#city").hide();
-                    $("#state").hide();
-                    $("#country").html("You live in the middle of nowhere.<br/>Run. Swim. Fly. <br/>Get out of there.");
-                }
-                for (var i = 0; i < reply.results[0].address_components.length; i++){
-                    for (var j = 0; j < reply.results[0].address_components[i].types.length; j++){
-                        if (reply.results[0].address_components[i].types[j] === "locality"){
-                            city = reply.results[0].address_components[i].long_name;
-                        }
-                        if (reply.results[0].address_components[i].types[j] === "administrative_area_level_1"){
-                            state = reply.results[0].address_components[i].long_name;
-                        }
-                        if (reply.results[0].address_components[i].types[j] === "country"){
-                            country = reply.results[0].address_components[i].long_name;
-                        }
-                    }
-                }
+//              //extra coords to play with:
+//             //Bergen, Norway
+//             // lat = 60.391920;
+//             // lon = 5.322118;
+//             //Lebanon, Missouri
+//             //  lat = 37.670487;
+//             //  lon = -92.752806;
+//             //Badwater, California (Death Valley)
+//             // lat = 36.22972;
+//             // lon = -116.7682987;
+//             //Santa Monica, California
+//             // lat = 34.011776;
+//             // lon = -118.494807;
+//             //Seattle, Washington
+//             // lat = 47.612329;
+//             // lon = -122.338294;
+//             //Rome, Italy
+//             // lat = 41.905314;
+//             // lon = 12.484865;
+//             //Johannesburg, South Africa
+//             // lat = -26.139839;
+//             // lon = 27.993798;
+//             //Pico Bolivar (summit), Merida, Venezuela
+//             // lat = 8.5408552;
+//             // lon = -71.0487095;
+//             //hardcoded below for testing
+//             // var map = "https://maps.googleapis.com/maps/api/staticmap?center=34.011776,-118.494807&zoom=13&size=500x500&markers=color:0xFF7E5F|34.011776,-118.494807&key=AIzaSyBPfJzCZ-L3MGzaS3cLCqyV1wbS9pZ5T50";
+
+    //success callback if Promise is created
+    function success(position){
+        console.log("lat = " + position.coords.latitude);
+        console.log("lon = " + position.coords.longitude);
+    }
+    //error callback if Promise fails
+    function error(err){
+        console.log("Err.code = " + err.code + " Err.message = " + err.message)
+    }
+    //options for browser geolocation
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+    //create a Promise object for the browser's location
+    var getPosition = function (options) {
+        return new Promise(function (success, error) {
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        });
+    };
+    //invoke the Promise to sequentially order the routines
+    getPosition()
+        .then((position) => {
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+            //use the lazy jQuery way to invoke the google api, which does a reverse geocode request on the latitude & longitude to find the local area
+            $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&result_type=locality&key=" + geokey, function (reply, status) {
+                console.dir(reply);
+                console.log("city: " );
+                city = reply.results[0].address_components[0].long_name;
+                state = reply.results[0].address_components[2].short_name;
+                country = reply.results[0].address_components[3].long_name;
                 $("#city").html(city + ", ");
                 $("#state").html(state);
                 $("#country").html(country);
+                console.log("status = " + status);
             });
-            //had to change the datatype to "jsonp" in order to bypass the CORS error
-            $.ajax({
-                dataType: "jsonp",
-                url: "https://api.darksky.net/forecast/" + wkey + lat + ',' + lon,
-                success: function (reply) {
-                    temp = Math.round(reply.currently.temperature);
-                    pic = reply.currently.icon;
-                    desc = reply.currently.summary;
+            //create a google map to show the current location
+            var map = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon +
+                "&zoom=13&size=500x500&markers=color:0xFF7E5F|" + lat + "," + lon + "&key=" + lockey;
+            $("#imgMap").attr("src", map);
+            var darkSkyUrl = "https://api.darksky.net/forecast/134a2a3a1e2502e7415f6d6502a136ff/" + lat + ',' + lon;
+            //use the extremely awesome CORS-busting fetchJsonp() method (link is in index.html) to invoke the darksky api
+            fetchJsonp(darkSkyUrl)
+                .then(function(obj){
+                    return obj.json();
+                })
+                .then(function(obj){
+                    // console.dir(obj);
+                    //get the weather information and bind it to the html page
+                    temp = Math.round(obj.currently.temperature);
+                    pic = obj.currently.icon;
+                    desc = obj.currently.summary;
                     $("#temp").html(temp);
                     $("#desc").html(desc);
                     $("#unit").html("F");
+                    //assign the appropriate weather icon
                     getIcon(pic);
-                },
-                error: function () {
-                    console.log("nope");
-                }
-            });
-        //     $.getJSON("https://api.darksky.net/forecast/" + wkey + lat + ',' + lon, function(reply) {
-        //         temp = Math.round(reply.currently.temperature);
-        //         pic = reply.currently.icon;
-        //         desc = reply.currently.summary;
-        //         $("#temp").html(temp);
-        //         $("#desc").html(desc);
-        //         $("#unit").html("F");
-        //          getIcon(pic);
-        //         //console.log(reply);
-        //     });
+                })
+                .catch(function(err){
+                    console.log("PROBLEM! Error = " + err);
+                })
+        })
+        .catch((err) => {
+            console.error("The Promise error = " + err.message);
         });
-    }
+
+    //convert between celcius and fahrenheit
     $("#unit").click(function () {
         if ($(this)[0].innerHTML !== "F"){
             $("#temp").html(temp);
