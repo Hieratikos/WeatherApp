@@ -38,12 +38,12 @@ $(document).ready(function () {
 //             // lat = 8.5408552;
 //             // lon = -71.0487095;
 //             //hardcoded below for testing
-//             // var map = "https://maps.googleapis.com/maps/api/staticmap?center=34.011776,-118.494807&zoom=13&size=500x500&markers=color:0xFF7E5F|34.011776,-118.494807&key=AIzaSyBPfJzCZ-L3MGzaS3cLCqyV1wbS9pZ5T50";
+// var map = "https://maps.googleapis.com/maps/api/staticmap?center=60.391920,5.322118&zoom=13&size=500x500&markers=color:0xFF7E5F|34.011776,-118.494807&key=AIzaSyBPfJzCZ-L3MGzaS3cLCqyV1wbS9pZ5T50";
 
     //success callback if Promise is created
     function success(position){
-        console.log("lat = " + position.coords.latitude);
-        console.log("lon = " + position.coords.longitude);
+        // console.log("lat = " + position.coords.latitude);
+        // console.log("lon = " + position.coords.longitude);
     }
     //error callback if Promise fails
     function error(err){
@@ -68,21 +68,21 @@ $(document).ready(function () {
             lon = position.coords.longitude;
             //use the lazy jQuery way to invoke the google api, which does a reverse geocode request on the latitude & longitude to find the local area
             $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&result_type=locality&key=" + geokey, function (reply, status) {
-                console.dir(reply);
-                console.log("city: " );
+            // $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng=60.391920,5.322118&result_type=locality&key=" + geokey, function (reply, status) {
+            //     console.dir(reply);
                 city = reply.results[0].address_components[0].long_name;
                 state = reply.results[0].address_components[2].short_name;
                 country = reply.results[0].address_components[3].long_name;
                 $("#city").html(city + ", ");
                 $("#state").html(state);
                 $("#country").html(country);
-                console.log("status = " + status);
             });
-            //create a google map to show the current location
+            //create a google map to show the current location -- comment this one out and test with the static locations around the world
             var map = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon +
                 "&zoom=13&size=500x500&markers=color:0xFF7E5F|" + lat + "," + lon + "&key=" + lockey;
             $("#imgMap").attr("src", map);
             var darkSkyUrl = "https://api.darksky.net/forecast/134a2a3a1e2502e7415f6d6502a136ff/" + lat + ',' + lon;
+            // var darkSkyUrl = "https://api.darksky.net/forecast/134a2a3a1e2502e7415f6d6502a136ff/60.391920,5.322118";
             //use the extremely awesome CORS-busting fetchJsonp() method (link is in index.html) to invoke the darksky api
             fetchJsonp(darkSkyUrl)
                 .then(function(obj){
