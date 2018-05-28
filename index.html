@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather App</title>
+    <link rel="icon" href="../images/camel-icon.png" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../styles/bootstrap3.3.7.min.css" />
     <link rel="stylesheet" type="text/css" href="weather_styles/weather-icons.css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
@@ -10,6 +11,7 @@
     <script type="text/javascript" src="../scripts/jquery-3.2.1.min.js"></script>
     <!--<script type="text/javascript" src="../scripts/jquery-3.3.1.js"></script>-->
     <script defer type="text/javascript" src="../scripts/bootstrap3.3.7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch-jsonp/1.0.6/fetch-jsonp.min.js"></script>
     <script defer src="scripts.js"></script>
 
 </head>
@@ -40,8 +42,15 @@
     <div class="header">
         <table>
         <tr>
-            <td class="left"> <h1><span id="city"></span><span id="state"></span></h1>
-                <h1><span id="country"></span></h1></td>
+            <td class="left">
+                <h1>
+                    <span id="city"></span>
+                    <span id="state"></span>
+                </h1>
+                <h1>
+                    <span id="country"></span>
+                </h1>
+            </td>
             <td class="center">
                 <div class="clear hide">
                     <p><i class="wi wi-day-sunny icon"></i></p>
