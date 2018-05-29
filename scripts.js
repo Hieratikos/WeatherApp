@@ -4,7 +4,11 @@ $(document).ready(function () {
         temp = "",
         wkey = "134a2a3a1e2502e7415f6d6502a136ff/",
         lockey = "AIzaSyBPfJzCZ-L3MGzaS3cLCqyV1wbS9pZ5T50",
-        geokey = "AIzaSyDY2_Bp1ICPX4-_HGHgokCAz67za-p6zG4";
+        geokey = "AIzaSyDY2_Bp1ICPX4-_HGHgokCAz67za-p6zG4",
+        myImgMap = document.querySelector("#imgMap"),
+        city = document.querySelector("#city"),
+        state = document.querySelector("#state"),
+        country = document.querySelector("#country");
 
     //create a Promise object for the browser's location
     let getPosition = function (options) {
@@ -71,7 +75,7 @@ $(document).ready(function () {
     function setUpMap(){
         const map = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon +
             "&zoom=13&size=500x500&markers=color:0xFF7E5F|" + lat + "," + lon + "&key=" + lockey;
-        $("#imgMap").attr("src", map);
+        myImgMap.src = map;
     }
     //parse the reverse geocode data from maps.googleapis.com
     function parseGeoData(response){
@@ -81,9 +85,9 @@ $(document).ready(function () {
     }
     //take the parsed geocode data and update the UI
     function updateUIGeoLocation(parsedGeoData){
-        $("#city").html(parsedGeoData.address_components[0].long_name + ", ");
-        $("#state").html(parsedGeoData.address_components[2].short_name);
-        $("#country").html(parsedGeoData.address_components[3].long_name);
+        city.innerHTML = parsedGeoData.address_components[0].long_name + ", ";
+        state.innerHTML = parsedGeoData.address_components[2].short_name;
+        country.innerHTML = parsedGeoData.address_components[3].long_name;
     }
     //parse the weather data from the darksky api
     function parseWeatherData(response){
