@@ -1,4 +1,4 @@
-$(document).ready(function () {
+(function() {
     let lat = "",
         lon = "",
         temp = "",
@@ -8,7 +8,11 @@ $(document).ready(function () {
         myImgMap = document.querySelector("#imgMap"),
         city = document.querySelector("#city"),
         state = document.querySelector("#state"),
-        country = document.querySelector("#country");
+        country = document.querySelector("#country"),
+        tempDisp = document.querySelector("#temp"),
+        weatherDesc = document.querySelector("#desc"),
+        unitCelFahr = document.querySelector("#unit");
+
 
     //create a Promise object for the browser's location
     let getPosition = function (options) {
@@ -97,22 +101,22 @@ $(document).ready(function () {
     }
     //take the parsed weather data and update the UI
     function updateUIWeather(parsedData){
-        $("#temp").html(Math.round(parsedData.temperature));
-        $("#desc").html(parsedData.summary);
-        $("#unit").html("F");
+        temp = Math.round(parsedData.temperature);
+        tempDisp.innerHTML = temp;
+        weatherDesc.innerHTML = parsedData.summary;
+        unitCelFahr.innerHTML = "F";
         //assign the appropriate weather icon
         getIcon(parsedData.icon);
     }
 
-    //convert between celsius and fahrenheit
-    $("#unit").click(function () {
-        if ($(this)[0].innerHTML !== "F"){
-            $("#temp").html(temp);
-            $(this).html("F");
+    //convert between celsius and fahrenheit when clicking the C or F display
+    unitCelFahr.addEventListener("click", function(){
+        if (this.innerHTML !== "F"){
+            tempDisp.innerHTML = temp;
+            this.innerHTML = "F";
         }else{
-            $(this).html("C");
-            let cent = Math.round((parseFloat($("#temp")[0].innerHTML) -32)*5/9);
-            $("#temp").html(cent);
+            this.innerHTML = "C";
+            tempDisp.innerHTML = Math.round((parseFloat(temp) -32)*5/9);
         }
     });
 
@@ -170,6 +174,7 @@ $(document).ready(function () {
 
     //unhide the appropriate weather icon
     function displayIcon(wPic){
-        $('div.' + wPic).removeClass('hide');
+        var divIcon = document.getElementsByClassName(wPic);
+        divIcon[0].classList.remove('hide');
     }
-});
+})();
