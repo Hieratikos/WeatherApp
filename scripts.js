@@ -14,11 +14,10 @@
         unitCelFahr = document.querySelector("#unit");
 
 
-    //create a Promise object for the browser's location
+    //bypass the https requirement now a part of navigator.geolocation.getCurrentPosition() with ipinfo
     let getPosition = function (options) {
-        return new Promise(function (success, error) {
-            navigator.geolocation.getCurrentPosition(success, error, options);
-        });
+        return $.getJSON('https://ipinfo.io/geo', function(response) {
+        })
     };
 
         //success callback if Promise is created
@@ -42,8 +41,9 @@
     //invoke the Promise to get the user's location and sequentially order the routines
     getPosition()
         .then((position) => {
-            lat = position.coords.latitude;
-            lon = position.coords.longitude;
+            var loc = position.loc.split(',');
+            lat = loc[0];
+            lon = loc[1];
             //invoke the google api, which does a reverse geocode request on the latitude & longitude to find the local area
             return fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&result_type=locality&key=" + geokey)
                 .then(handleErrors)
